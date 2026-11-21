@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cari Bedanya! — Taman, Kamar &amp; Pantai</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header id="hud">
+    <div class="hud-left">
+      <div id="scene-name">Kebun Pagi</div>
+      <div id="scene-sub">Adegan 1 dari 3</div>
+    </div>
+    <div class="hud-mid">
+      <div id="found-counter" aria-label="Perbedaan ditemukan">Ditemukan <b id="found-count">0</b>/<span id="total-count">6</span> &bull; Sisa <b id="remain-count">6</b></div>
+      <div id="found-pips" aria-hidden="true"></div>
+    </div>
+    <div class="hud-right">
+      <div id="timer" aria-label="Sisa waktu">2:00</div>
+      <div id="score" aria-label="Skor">Skor 0</div>
+    </div>
+  </header>
+
+  <main id="boards">
+    <section class="panel" id="panel-left" aria-label="Gambar kiri">
+      <div class="panel-tag">A</div>
+      <div class="svg-holder" id="holder-left"></div>
+    </section>
+    <section class="panel" id="panel-right" aria-label="Gambar kanan">
+      <div class="panel-tag">B</div>
+      <div class="svg-holder" id="holder-right"></div>
+    </section>
+  </main>
+
+  <footer id="controls">
+    <button id="btn-hint" type="button" title="Petunjuk (H)">💡 Petunjuk <span id="hint-count">3</span></button>
+    <button id="btn-pause" type="button" title="Jeda (P)">⏸ Jeda</button>
+    <button id="btn-restart" type="button" title="Ulangi adegan (R)">↻ Ulangi</button>
+    <button id="btn-mute" type="button" title="Suara (M)">🔊 Suara</button>
+    <span id="keys-hint">Klik / Enter untuk menandai &bull; ←↑↓→ gerakkan bidikan &bull; H petunjuk &bull; P jeda</span>
+  </footer>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <div id="overlay" class="hidden">
+    <div id="overlay-card">
+      <h1 id="overlay-title">Cari Bedanya!</h1>
+      <p id="overlay-text"></p>
+      <div id="overlay-stars" aria-hidden="true"></div>
+      <div id="overlay-buttons"></div>
+    </div>
+  </div>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

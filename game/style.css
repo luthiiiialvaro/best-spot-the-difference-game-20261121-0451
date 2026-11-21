@@ -1,0 +1,139 @@
+/* Cari Bedanya! — layout, HUD, panels, markers, overlays. */
+:root {
+  --ink: #2b2118;
+  --paper: #fff7e8;
+  --panel-bg: #fdf3d8;
+  --accent: #e4572e;
+  --accent-soft: #f6a609;
+  --green: #2e9e5b;
+  --red: #d33a2c;
+  --blue: #2f6fb2;
+  --card: #fffdf6;
+  --shadow: 0 6px 24px rgba(43, 33, 24, 0.18);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+  min-height: 100vh;
+}
+#app { max-width: 1280px; margin: 0 auto; padding: 10px 14px 16px; }
+
+/* ---- HUD ---- */
+#hud {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--card); border: 2px solid #e8d5a8; border-radius: 14px;
+  padding: 8px 16px; box-shadow: var(--shadow);
+}
+#scene-name { font-size: 24px; font-weight: 800; letter-spacing: 0.3px; }
+#scene-sub { font-size: 13px; color: #8a6d3b; }
+.hud-mid { text-align: center; }
+#found-counter { font-size: 19px; font-weight: 700; }
+#found-counter b { color: var(--green); font-size: 22px; }
+#found-pips { margin-top: 4px; display: flex; gap: 6px; justify-content: center; }
+.pip {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid #c9a86a; background: #fff; display: inline-block;
+}
+.pip.done { background: var(--green); border-color: var(--green); }
+.hud-right { text-align: right; }
+#timer {
+  font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums;
+  line-height: 1; color: var(--ink);
+}
+#timer.low { color: var(--red); animation: pulse 1s infinite; }
+#timer.paused { color: var(--blue); }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+#score { font-size: 14px; color: #8a6d3b; margin-top: 2px; }
+
+/* ---- Boards ---- */
+#boards { display: flex; gap: 16px; margin-top: 12px; }
+.panel {
+  position: relative; flex: 1 1 0; background: var(--panel-bg);
+  border: 2px solid #e8d5a8; border-radius: 14px; padding: 8px;
+  box-shadow: var(--shadow);
+}
+.panel-tag {
+  position: absolute; top: -11px; left: 14px; z-index: 3;
+  background: var(--accent); color: #fff; font-weight: 800; font-size: 15px;
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #fff;
+}
+.svg-holder { line-height: 0; }
+.svg-holder svg { width: 100%; height: auto; display: block; border-radius: 8px; }
+
+/* markers drawn inside the SVG */
+.mark-ring {
+  fill: rgba(46, 158, 91, 0.12);
+  stroke: var(--green); stroke-width: 5; stroke-linecap: round;
+  animation: pop 0.35s ease-out;
+}
+.mark-check {
+  fill: none; stroke: var(--green); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round;
+  animation: pop 0.35s ease-out;
+}
+@keyframes pop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.12); } 100% { transform: scale(1); opacity: 1; } }
+.miss-x {
+  stroke: var(--red); stroke-width: 6; stroke-linecap: round;
+  animation: fadeout 0.6s ease-out forwards;
+}
+@keyframes fadeout { 0% { opacity: 1; } 100% { opacity: 0; } }
+.hint-ring {
+  fill: rgba(246, 166, 9, 0.10);
+  stroke: var(--accent-soft); stroke-width: 5; stroke-dasharray: 10 8;
+  animation: hintspin 1.6s linear infinite;
+}
+@keyframes hintspin { to { stroke-dashoffset: -72; } }
+.crosshair { stroke: var(--accent); stroke-width: 3; fill: none; opacity: 0.9; pointer-events: none; }
+.crosshair-dot { fill: var(--accent); }
+
+/* ---- Controls ---- */
+#controls { display: flex; gap: 10px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+#controls button {
+  font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer;
+  background: var(--card); color: var(--ink);
+  border: 2px solid #e0c48d; border-radius: 10px; padding: 8px 14px;
+  box-shadow: 0 2px 0 #e0c48d;
+}
+#controls button:hover:not(:disabled) { background: #ffefc4; }
+#controls button:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+#controls button:disabled { opacity: 0.45; cursor: default; }
+#btn-hint { border-color: var(--accent-soft); }
+#keys-hint { margin-left: auto; font-size: 13px; color: #8a6d3b; }
+
+/* ---- Toast ---- */
+#toast {
+  position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(20px);
+  background: var(--ink); color: #fff; font-weight: 700; font-size: 17px;
+  padding: 10px 20px; border-radius: 999px; opacity: 0; pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s; z-index: 20; white-space: nowrap;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ---- Overlay screens ---- */
+#overlay {
+  position: fixed; inset: 0; background: rgba(43, 33, 24, 0.55);
+  display: flex; align-items: center; justify-content: center; z-index: 30;
+}
+#overlay.hidden { display: none; }
+#overlay-card {
+  background: var(--card); border-radius: 18px; padding: 28px 36px; max-width: 560px;
+  text-align: center; box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+  border: 3px solid #e8d5a8;
+}
+#overlay-card h1 { margin: 0 0 8px; font-size: 38px; }
+#overlay-card p { font-size: 17px; line-height: 1.55; margin: 6px 0 14px; white-space: pre-line; }
+#overlay-stars { font-size: 34px; letter-spacing: 6px; margin: 4px 0 10px; }
+#overlay-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+#overlay-buttons button {
+  font-family: inherit; font-size: 18px; font-weight: 800; cursor: pointer;
+  background: var(--accent); color: #fff; border: none; border-radius: 12px;
+  padding: 12px 22px; box-shadow: 0 3px 0 #b23a1d;
+}
+#overlay-buttons button.secondary { background: #fff; color: var(--ink); border: 2px solid #e0c48d; box-shadow: 0 3px 0 #e0c48d; }
+#overlay-buttons button:active { transform: translateY(2px); box-shadow: none; }
+.howto { text-align: left; font-size: 15px; }
+.howto li { margin: 4px 0; }
